@@ -21,7 +21,7 @@ class RadioWrapper {
         const bytes: number[] = []
 
         for (const char of stringToSend) {
-            console.log(char.codePointAt(0))
+            console.log(char.charCodeAt(0))
         }        
     }
     
