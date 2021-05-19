@@ -25,7 +25,6 @@ class RadioWrapper {
             // Kijk of dit end of message is
             if (str.substr(str.length-2) == "03") {
                 let decoded_string = ""
-                console.log("End of message")
 
                 // Decode full string
                 const encoded_message = full_string.substr(2, full_string.length-4)
@@ -75,8 +74,10 @@ class RadioWrapper {
 
 const rwrapper = new RadioWrapper(3)
 
+const start = control.millis()
 rwrapper.onReceive((msg: string) => {
-    console.log(msg)
+    console.log("Recieved at " + control.millis().toString() + " took: " + (control.millis() - start).toString())
 })
 
 rwrapper.sendString("tim's moeder is kaulo hoere bol en dik en vet asdl;fjasd;ljfasd;lfjasd;lkfjasd;lfjk")
+
