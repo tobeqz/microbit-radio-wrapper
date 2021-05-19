@@ -92,7 +92,7 @@ class RadioWrapper {
                 console.log(full_string)
                 // Decode full string
 
-                const encoded_message = full_string.substr(2, full_string.length-2)
+                const encoded_message = full_string.substr(2, full_string.length-4)
                 console.log(encoded_message)
             }
         })
