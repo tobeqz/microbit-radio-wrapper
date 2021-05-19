@@ -1,5 +1,6 @@
-radio.setGroup(1)
-
+radio.onReceiveNumber(num => {
+    console.log(num)
+})
 /* 
  * Deze class is nodig omdat je maximaal 18 bytes
  * aan data kunt sturing via 1 sendString() call
@@ -17,15 +18,29 @@ class RadioWrapper {
     }
     
     sendString(stringToSend: string) {
-        // Convert full string to bytes
-        const bytes: number[] = []
+        const char_codes: number[] = [
+            -1,
+            -1
+        ]
+        // De receivers krijgen deze charcodes nummer
+        // voor nummer, wanneer de receiver twee -1's achter
+        // elkaar ziet, betekent dat het begin van een nieuwe
+        // string
+        //
+        // -2, -2 betekent het einde van een string
 
         for (const char of stringToSend) {
-            console.log(char.codePointAt(0))
+            char_codes.push(char.charCodeAt(0))
         }        
+
+        char_codes.push(...[-2, -2])
+        
+        for (const code of char_codes) {
+            radio.sendNumber(code)
+        }
     }
     
-    onRecieve(callback: Function) {
+    onReceive(callback: Function) {
 
     }
 }
