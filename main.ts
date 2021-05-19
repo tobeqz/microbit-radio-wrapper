@@ -4,7 +4,9 @@ radio.onReceivedNumber(num => {
 
 const num_to_hex = "0123456789abcdef"
 
-const hex_to_num {
+const hex_to_num: {
+    [key: string]: number
+} = {
     "0": 0,
     "1": 1,
     "2": 2,
@@ -27,22 +29,22 @@ const hex_to_num {
  * en ook geen parseInt(16)
  */
 class Hexadecimal {
-    string: string,
+    str: string
     num: number
 
     constructor(num: string | number) {
         if (typeof num == "string") {
-            this.string = num
+            this.str = num
             let total = 0
 
             for (let i = num.length-1; i >= 0; i--) {
                 total += hex_to_num[num[i]] * Math.pow(16, i)
             }
 
-            self.num = total
+            this.num = total
         } else if (typeof num == "number") {
             this.num = num
-            this.string = ""
+            this.str = ""
 
             let rest = num
 
@@ -50,12 +52,12 @@ class Hexadecimal {
 
             while (rest > 0) {
                 const remainder = rest % 16
-                const rest = Math.floor(num / 16)
+                rest = Math.floor(rest / 16)
                 remainders.push(remainder)
             }
 
             for (let i = remainders.length-1; i >= 0; i--) {
-                this.string += num_to_hex[í]
+                this.str += num_to_hex[remainders[i]]
             }
         }
 
@@ -92,7 +94,7 @@ class RadioWrapper {
         
         for (let i = 0; i < char_codes.length; i++) {
             const char_code = char_codes[i]
-            encoded_string += new Hexadecimal(char_code).string
+            encoded_string += new Hexadecimal(char_code).str
         }
         
         const string_parts = []
