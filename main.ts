@@ -29,3 +29,7 @@ class RadioWrapper {
 
     }
 }
+
+const rwrapper = new RadioWrapper()
+
+rwrapper.sendString("coolió")
