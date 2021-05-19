@@ -1,69 +1,4 @@
-const num_to_hex = "0123456789abcdef"
 
-const hex_to_num: {
-    [key: string]: number
-} = {
-    "0": 0,
-    "1": 1,
-    "2": 2,
-    "3": 3,
-    "4": 4,
-    "5": 5,
-    "6": 6,
-    "7": 7,
-    "8": 8,
-    "9": 9,
-    "a": 10,
-    "b": 11,
-    "c": 12,
-    "d": 13,
-    "e": 14,
-    "f": 15
-}
-/*
- * Makecode heeft natuurlijk geen .toString(16)
- * en ook geen parseInt(16)
- */
-class Hexadecimal {
-    str: string
-    num: number
-
-    constructor(num: string | number) {
-        if (typeof num == "string") {
-            this.str = num
-            let total = 0
-
-            for (let i = 0; i < num.length; i++) {
-                const multiplier = hex_to_num[num[i]]
-                const power = num.length - 1 - i
-                total += multiplier * Math.pow(16, power)
-            }
-
-            this.num = total
-        } else if (typeof num == "number") {
-            this.num = num
-            this.str = ""
-
-            if (num < 16) {
-                this.str = "0"
-            }
-
-            let rest = num
-
-            const remainders: number[] = []
-
-            while (rest > 0) {
-                const remainder = rest % 16
-                rest = Math.floor(rest / 16)
-                remainders.push(remainder)
-            }
-
-            for (let i = remainders.length-1; i >= 0; i--) {
-                this.str += num_to_hex[remainders[i]]
-            }
-        }
-}
-}
 /* 
  * Deze class is nodig omdat je maximaal 18 bytes
  * aan data kunt sturing via 1 sendString() call
@@ -78,7 +13,6 @@ class Hexadecimal {
 class RadioWrapper {
     callbacks: Function[]
     
-
     constructor(radioGroup: number) {
         radio.setGroup(radioGroup)
         this.callbacks = []
@@ -118,57 +52,19 @@ class RadioWrapper {
             2 // 2 betekent Start of Text in ASCII
         ]
 
-        for (const char of stringToSend) {
-            char_codes.push(char.charCodeAt(0))
-        }        
+        const message_buffer = Buffer.fromUTF8(stringToSend)
+        const message_byte_array = message_buffer.toArray(NumberFormat.UInt8LE)
 
-        char_codes.push(3) // 3 betekent End of Text in ASCII
-    
-        // Kijk of er een charcode > 255 is, als die er is moet
-        // er een sedatperator tussen de hexadecimale nummers komen
-        // om de client te laten weten waar een nummer begin
-        // en start. Als alle nummers kleiner of gelijk aan
-        // 255 zijn, dan kan de client er vanuit gaan dat alle nummers
-        // 2 characters lang zijn.
+        // Dit is ASCII, waarin 2 het begin en 3 het einde betekent van de message
+        const final_byte_array = [2].concat(message_byte_array).concat([3])
+
         
-        let unicode_support = false
-
-        for (const char_code of char_codes) {
-            if (char_code > 255) {
-                unicode_support = true 
-            }
-        }
-
-        let encoded_string = ""
-        
-        for (let i = 0; i < char_codes.length; i++) {
-            const char_code = char_codes[i]
-            encoded_string += new Hexadecimal(char_code).str
-
-            if (unicode_support && i != char_codes.length-1) {
-                encoded_string += "." // Seperator
-            }
-        }
-        
-        const string_parts = []
-        // Verdeel de string in delen van 18 characters.
-        // Ik kan er nu vanuit gaan dat alle characters hier ASCII zijn
-        // Bij ASCII geldt: 1 char = 1 byte
-        // En dus passen er altijd 18 characters in een packet
-        
-        for (let i = 0; i < encoded_string.length; i++) {
-            if (i % 18 == 0) {
-                string_parts.push("")
-            }
-
-            string_parts[string_parts.length-1] += encoded_string[i]
-        }
-
-        console.log(encoded_string)
-        console.log(string_parts)
-
-        for (const part of string_parts) {
-            radio.sendString(part)
+        for (let i = 0; i < final_byte_array.length; i += 18) {
+            // Selecteer huidige slice
+            const current_slice = final_byte_array.slice(i, i+18)
+            const current_buf = Buffer.fromArray(current_slice)
+            console.log("sending", current_slice)
+            radio.sendBuffer(current_buf)
         }
     }
     
