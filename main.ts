@@ -19,27 +19,27 @@ class RadioWrapper {
 
         let full_string = ""
 
-        radio.onReceivedString(str => {
-            full_string += str 
+        // radio.onReceivedString(str => {
+        //     full_string += str 
 
-            // Kijk of dit end of message is
-            if (str.substr(str.length-2) == "03") {
-                let decoded_string = ""
+        //     // Kijk of dit end of message is
+        //     if (str.substr(str.length-2) == "03") {
+        //         let decoded_string = ""
 
-                // Decode full string
-                const encoded_message = full_string.substr(2, full_string.length-4)
-                for (let i = 0; i < encoded_message.length; i+=2) {
-                    let encoded_byte = encoded_message.substr(i, 2)
-                    let byte_value = new Hexadecimal(encoded_byte).num
-                    let decoded_char = String.fromCharCode(byte_value)
-                    decoded_string += decoded_char
-                }
+        //         // Decode full string
+        //         const encoded_message = full_string.substr(2, full_string.length-4)
+        //         for (let i = 0; i < encoded_message.length; i+=2) {
+        //             let encoded_byte = encoded_message.substr(i, 2)
+        //             let byte_value = new Hexadecimal(encoded_byte).num
+        //             let decoded_char = String.fromCharCode(byte_value)
+        //             decoded_string += decoded_char
+        //         }
 
-                for (const callback of this.callbacks) {
-                    callback(decoded_string)
-                }
-            }
-        })
+        //         for (const callback of this.callbacks) {
+        //             callback(decoded_string)
+        //         }
+        //     }
+        // })
 
         
 
@@ -62,7 +62,8 @@ class RadioWrapper {
             // Selecteer huidige slice
             const current_slice = final_byte_array.slice(i, i+18)
             const current_buf = Buffer.fromArray(current_slice)
-            console.log("sending", current_slice)
+            console.log("sending")
+            console.log(current_buf)
             radio.sendBuffer(current_buf)
         }
     }
