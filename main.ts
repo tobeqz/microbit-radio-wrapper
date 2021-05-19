@@ -34,7 +34,9 @@ class Hexadecimal {
             let total = 0
 
             for (let i = num.length-1; i >= 0; i--) {
-                total += hex_to_num[num[i]] * Math.pow(16, i)
+                const multiplier = hex_to_num[num[i]]
+                const power = i
+                total += multiplier * Math.pow(16, i)
             }
 
             this.num = total
