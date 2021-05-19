@@ -19,27 +19,39 @@ class RadioWrapper {
     
     sendString(stringToSend: string) {
         const char_codes: number[] = [
-            -1,
-            -1
+            2 // 2 betekent Start of Text in ASCII
         ]
-        // De receivers krijgen deze charcodes nummer
-        // voor nummer, wanneer de receiver twee -1's achter
-        // elkaar ziet, betekent dat het begin van een nieuwe
-        // string
-        //
-        // -2, -2 betekent het einde van een string
 
         for (const char of stringToSend) {
             char_codes.push(char.charCodeAt(0))
             console.log(char.charCodeAt(0))
         }        
 
-        char_codes.push(-2)
-        char_codes.push(-2)
+        char_codes.push(3) // 3 betekent End of Text in ASCII
+
+        let encoded_string = ""
         
-        for (const code of char_codes) {
-            radio.sendNumber(code)
+        for (let i = 0; i < char_codes.length; i++) {
+            const char_code = char_codes[i]
+            encoded_string += char_code.toString(16) // 16, hexadecimaal
         }
+        
+        const string_parts = []
+        // Verdeel de string in delen van 18 characters.
+        // Ik kan er nu vanuit gaan dat alle characters hier ASCII zijn
+        // Bij ASCII geldt: 1 char = 1 byte
+        // En dus passen er altijd 18 characters in een packet
+        
+        for (let i = 0; i < encoded_string.length; i++) {
+            if (i % 18 == 0) {
+                string_parts.push("")
+            }
+
+            string_parts[string_parts.length-1] += encoded_string[i]
+        }
+
+        console.log(encoded_string)
+        console.log(string_parts)
     }
     
     onReceive(callback: Function) {
