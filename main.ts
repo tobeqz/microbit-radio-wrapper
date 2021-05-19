@@ -44,6 +44,10 @@ class Hexadecimal {
             this.num = num
             this.string = ""
 
+            if (num < 16) {
+                this.string = "0"
+            }
+
             let rest = num
 
             const remainders: number[] = []
