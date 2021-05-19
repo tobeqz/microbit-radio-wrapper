@@ -30,6 +30,6 @@ class RadioWrapper {
     }
 }
 
-const rwrapper = new RadioWrapper()
+const rwrapper = new RadioWrapper(3)
 
 rwrapper.sendString("coolió")
