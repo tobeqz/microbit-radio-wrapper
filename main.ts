@@ -33,7 +33,7 @@ class Hexadecimal {
             this.str = num
             let total = 0
 
-            for (let i = num.length-1; i >= 0; i--) {
+            for (let i = 0; i < num.length; i++) {
                 const multiplier = hex_to_num[num[i]]
                 const power = i
                 total += multiplier * Math.pow(16, power)
