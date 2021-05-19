@@ -82,13 +82,13 @@ class RadioWrapper {
         this.callbacks = []
 
         let full_string = ""
-        let decoded_string = ""
 
         radio.onReceivedString(str => {
             full_string += str 
 
             // Kijk of dit end of message is
             if (str.substr(str.length-2) == "03") {
+                let decoded_string = ""
                 console.log("End of message")
 
                 // Decode full string
@@ -99,14 +99,15 @@ class RadioWrapper {
                     let decoded_char = String.fromCharCode(byte_value)
                     decoded_string += decoded_char
                 }
+
+                for (const callback of this.callbacks) {
+                    callback(decoded_string)
+                }
             }
         })
 
-        for (const callback of this.callbacks) {
-            callback(decoded_string)
-        }
+        
 
-        decoded_string = ""
         full_string = ""
     }
     
