@@ -1,11 +1,3 @@
-radio.onReceivedNumber(num => {
-    console.log(num)
-})
-
-radio.onReceivedString(str => {
-    console.log(str)
-})
-
 const num_to_hex = "0123456789abcdef"
 
 const hex_to_num: {
