@@ -136,6 +136,10 @@ class RadioWrapper {
 
         console.log(encoded_string)
         console.log(string_parts)
+
+        for (const part of string_parts) {
+            radio.sendString(part)
+        }
     }
     
     onReceive(callback: Function) {
