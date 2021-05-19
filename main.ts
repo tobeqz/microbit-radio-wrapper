@@ -176,4 +176,8 @@ class RadioWrapper {
 
 const rwrapper = new RadioWrapper(3)
 
+rwrapper.onReceive(msg => {
+    console.log(msg)
+})
+
 rwrapper.sendString("tim's moeder is kaulo hoere bol en dik en vet asdl;fjasd;ljfasd;lfjasd;lkfjasd;lfjk")
