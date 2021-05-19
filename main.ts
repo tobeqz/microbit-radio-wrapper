@@ -176,7 +176,7 @@ class RadioWrapper {
 
 const rwrapper = new RadioWrapper(3)
 
-rwrapper.onReceive(msg => {
+rwrapper.onReceive((msg: string) => {
     console.log(msg)
 })
 
