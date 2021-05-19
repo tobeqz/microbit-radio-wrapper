@@ -84,11 +84,10 @@ class RadioWrapper {
         let full_string = ""
 
         radio.onReceivedString(str => {
-            console.log('Recieved')
             full_string += str 
 
             // Check if this was end of message
-            if (str.substr(full_string.length-2) == "03") {
+            if (str.substr(str.length-2) == "03") {
                 console.log("End of message")
                 console.log(full_string)
                 // Decode full string
