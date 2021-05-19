@@ -47,7 +47,7 @@ class Hexadecimal {
             this.str = ""
 
             if (num < 16) {
-                this.string = "0"
+                this.str = "0"
             }
 
             let rest = num
@@ -93,12 +93,31 @@ class RadioWrapper {
         }        
 
         char_codes.push(3) // 3 betekent End of Text in ASCII
+    
+        // Kijk of er een charcode > 255 is, als die er is moet
+        // er een seperator tussen de hexadecimale nummers komen
+        // om de client te laten weten waar een nummer begin
+        // en start. Als alle nummers kleiner of gelijk aan
+        // 255 zijn, dan kan de client er vanuit gaan dat alle nummers
+        // 2 characters lang zijn.
+        
+        let unicode_support = false
+
+        for (const char_code of char_codes) {
+            if (char_code > 255) {
+                unicode_support = true 
+            }
+        }
 
         let encoded_string = ""
         
         for (let i = 0; i < char_codes.length; i++) {
             const char_code = char_codes[i]
             encoded_string += new Hexadecimal(char_code).str
+
+            if (unicode_support && i != char_codes.length-1) {
+                encoded_string += "." // Seperator
+            }
         }
         
         const string_parts = []
