@@ -1,10 +1,5 @@
 radio.setGroup(1)
 
-radio.sendString("123456789.123456789.123456789.123456789.123456789")
-radio.onRecievedString(str => {
-    console.log(str, str.length)
-})
-
 /* 
  * Deze class is nodig omdat je maximaal 18 bytes
  * aan data kunt sturing via 1 sendString() call
@@ -34,4 +29,3 @@ class RadioWrapper {
 
     }
 }
-})
