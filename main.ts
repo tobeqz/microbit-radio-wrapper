@@ -68,8 +68,7 @@ class Hexadecimal {
                 this.str += num_to_hex[remainders[i]]
             }
         }
-
-    }
+}
 }
 /* 
  * Deze class is nodig omdat je maximaal 18 bytes
@@ -83,8 +82,25 @@ class Hexadecimal {
  * om te implementeren.
  */
 class RadioWrapper {
+    callbacks: Function[]
+    
+
     constructor(radioGroup: number) {
         radio.setGroup(radioGroup)
+        this.callbacks = []
+
+        let full_string = ""
+
+        radio.onReceivedString(str => {
+            full_string += str 
+
+            // Check if this was end of message
+            if (str.substr(full_string.length-2) == "03") {
+                console.log("End of message")
+                console.log(full_string)
+                // Decode full string
+            }
+        })
     }
     
     sendString(stringToSend: string) {
@@ -99,7 +115,7 @@ class RadioWrapper {
         char_codes.push(3) // 3 betekent End of Text in ASCII
     
         // Kijk of er een charcode > 255 is, als die er is moet
-        // er een seperator tussen de hexadecimale nummers komen
+        // er een sedatperator tussen de hexadecimale nummers komen
         // om de client te laten weten waar een nummer begin
         // en start. Als alle nummers kleiner of gelijk aan
         // 255 zijn, dan kan de client er vanuit gaan dat alle nummers
@@ -147,7 +163,7 @@ class RadioWrapper {
     }
     
     onReceive(callback: Function) {
-
+        this.callbacks.push(callback)        
     }
 }
 
