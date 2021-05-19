@@ -34,7 +34,8 @@ class RadioWrapper {
             console.log(char.charCodeAt(0))
         }        
 
-        char_codes.push(...[-2, -2])
+        char_codes.push(-2)
+        char_codes.push(-2)
         
         for (const code of char_codes) {
             radio.sendNumber(code)
