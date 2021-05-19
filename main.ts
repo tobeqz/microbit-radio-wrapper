@@ -1,4 +1,4 @@
-radio.onReceiveNumber(num => {
+radio.onReceivedNumber(num => {
     console.log(num)
 })
 /* 
