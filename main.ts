@@ -21,7 +21,10 @@ class RadioWrapper {
         radio.onReceivedString(slice => {
             full_string += slice
             if (slice[slice.length-1] == "\u{03}") {
-                console.log(full_string)
+                for (const callback of callbacks) {
+                    callback(full_string)
+                }
+
                 full_string = ""
             }
         })
@@ -69,7 +72,7 @@ const rwrapper = new RadioWrapper(3)
 
 const start = control.millis()
 rwrapper.onReceive((msg: string) => {
-    console.log("Recieved at " + control.millis().toString() + " took: " + (control.millis() - start).toString())
+    console.log("Recieved string: " + msg)
 })
 
 rwrapper.sendString("tim's moeder is kaulo hoere bol en dik en vet asdl;fjasd;ljfasd;lfjasd;lkfjasd;lfjk")
