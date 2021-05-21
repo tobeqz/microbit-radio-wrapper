@@ -41,19 +41,15 @@ class RadioWrapper {
         //         }
         //     }
         // })
-
-        
-
-        full_string = ""
     }
-    
+
     sendString(stringToSend: string) {
         const string_with_boundary = `\u{02}${stringToSend}\u{03}`
         // 02 en 03 staan in ASCII voor start en einde respectievelijk
 
         for (let i = 0; i < string_with_boundary.length; i += 18) {
             const slice = string_with_boundary.substr(i, 18)
-            radio.send(slice)
+            radio.sendString(slice)
         }
     }
     
