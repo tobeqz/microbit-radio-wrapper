@@ -17,17 +17,8 @@ class RadioWrapper {
         radio.setGroup(radioGroup)
         this.callbacks = []
 
-        let full_string = ""
-        let all_bytes = []
 
-        radio.onRecievedBuffer(buf => {
-            const num_array = buf.toArray(NumberFormat.UInt8LE) 
-            all_bytes = all_bytes.concat(num_array)
-
-            if (num_array[num_array.length - 1] == 3) /* ASCII END TEXT */ {
-
-            } 
-        })
+        
 
         // radio.onReceivedString(str => {
         //     full_string += str 
