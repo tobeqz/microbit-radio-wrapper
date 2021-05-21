@@ -17,21 +17,13 @@ class RadioWrapper {
         radio.setGroup(radioGroup)
         this.callbacks = []
 
-        let recievedFirstSlice = false
-        let startTime = 0
-
         let full_string = ""
         radio.onReceivedString(slice => {
-            if (!recievedFirstSlice) {
-                startTime = control.millis()
-            }
             full_string += slice
             if (slice[slice.length-1] == "\u{03}") {
                 for (const callback of this.callbacks) {
                     callback(full_string)
                 }
-
-                console.log(control.millis() - startTime)
 
                 full_string = ""
             }
@@ -52,13 +44,3 @@ class RadioWrapper {
         this.callbacks.push(callback)        
     }
 }
-
-const rwrapper = new RadioWrapper(3)
-
-const start = control.millis()
-rwrapper.onReceive((msg: string) => {
-    console.log("Recieved string: " + msg)
-})
-
-rwrapper.sendString("tim's moeder is kaulo hoere bol en dik en vet asdl;fjasd;ljfasd;lfjasd;lkfjasd;lfjk")
-
