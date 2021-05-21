@@ -21,36 +21,13 @@ class RadioWrapper {
         radio.onReceivedString(slice => {
             full_string += slice
             if (slice[slice.length-1] == "\u{03}") {
-                for (const callback of callbacks) {
+                for (const callback of this.callbacks) {
                     callback(full_string)
                 }
 
                 full_string = ""
             }
         })
-        
-
-        // radio.onReceivedString(str => {
-        //     full_string += str 
-
-        //     // Kijk of dit end of message is
-        //     if (str.substr(str.length-2) == "03") {
-        //         let decoded_string = ""
-
-        //         // Decode full string
-        //         const encoded_message = full_string.substr(2, full_string.length-4)
-        //         for (let i = 0; i < encoded_message.length; i+=2) {
-        //             let encoded_byte = encoded_message.substr(i, 2)
-        //             let byte_value = new Hexadecimal(encoded_byte).num
-        //             let decoded_char = String.fromCharCode(byte_value)
-        //             decoded_string += decoded_char
-        //         }
-
-        //         for (const callback of this.callbacks) {
-        //             callback(decoded_string)
-        //         }
-        //     }
-        // })
     }
 
     sendString(stringToSend: string) {
