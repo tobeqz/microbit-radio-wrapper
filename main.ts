@@ -59,11 +59,10 @@ class RadioWrapper {
     sendString(stringToSend: string) {
         const string_with_boundary = `\u{02}${stringToSend}\u{03}`
         // 02 en 03 staan in ASCII voor start en einde respectievelijk
-        const string_parts:string[] = []
 
         for (let i = 0; i < string_with_boundary.length; i += 18) {
             const slice = string_with_boundary.substr(i, 18)
-            string_parts.push(slice)
+            radio.send(slice)
         }
     }
     
