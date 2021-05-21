@@ -17,7 +17,14 @@ class RadioWrapper {
         radio.setGroup(radioGroup)
         this.callbacks = []
 
-
+        let full_string = ""
+        radio.onReceivedString(slice => {
+            full_string += slice
+            if (slice[slice.length-1] == "\u{03}") {
+                console.log(full_string)
+                full_string = ""
+            }
+        })
         
 
         // radio.onReceivedString(str => {
