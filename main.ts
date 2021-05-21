@@ -18,6 +18,16 @@ class RadioWrapper {
         this.callbacks = []
 
         let full_string = ""
+        let all_bytes = []
+
+        radio.onRecievedBuffer(buf => {
+            const num_array = buf.toArray(NumberFormat.UInt8LE) 
+            all_bytes = all_bytes.concat(num_array)
+
+            if (num_array[num_array.length - 1] == 3) /* ASCII END TEXT */ {
+
+            } 
+        })
 
         // radio.onReceivedString(str => {
         //     full_string += str 
@@ -47,24 +57,13 @@ class RadioWrapper {
     }
     
     sendString(stringToSend: string) {
-        const char_codes: number[] = [
-            2 // 2 betekent Start of Text in ASCII
-        ]
+        const string_with_boundary = `\u{02}${stringToSend}\u{03}`
+        // 02 en 03 staan in ASCII voor start en einde respectievelijk
+        const string_parts:string[] = []
 
-        const message_buffer = Buffer.fromUTF8(stringToSend)
-        const message_byte_array = message_buffer.toArray(NumberFormat.UInt8LE)
-
-        // Dit is ASCII, waarin 2 het begin en 3 het einde betekent van de message
-        const final_byte_array = [2].concat(message_byte_array).concat([3])
-
-        
-        for (let i = 0; i < final_byte_array.length; i += 18) {
-            // Selecteer huidige slice
-            const current_slice = final_byte_array.slice(i, i+18)
-            const current_buf = Buffer.fromArray(current_slice)
-            console.log("sending")
-            console.log(current_buf)
-            radio.sendBuffer(current_buf)
+        for (let i = 0; i < string_with_boundary.length; i += 18) {
+            const slice = string_with_boundary.substr(i, 18)
+            string_parts.push(slice)
         }
     }
     
