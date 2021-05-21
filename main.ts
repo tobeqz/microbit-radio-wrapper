@@ -17,13 +17,21 @@ class RadioWrapper {
         radio.setGroup(radioGroup)
         this.callbacks = []
 
+        let recievedFirstSlice = false
+        let startTime = 0
+
         let full_string = ""
         radio.onReceivedString(slice => {
+            if (!recievedFirstSlice) {
+                startTime = control.millis()
+            }
             full_string += slice
             if (slice[slice.length-1] == "\u{03}") {
                 for (const callback of this.callbacks) {
                     callback(full_string)
                 }
+
+                console.log(control.millis() - startTime)
 
                 full_string = ""
             }
